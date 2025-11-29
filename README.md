@@ -1,4 +1,4 @@
-# GameHub 🎮
+# LudoLab 🎮
 
 **Plataforma multi-juego para Proyecto de Fin de Grado ASIR**
 
