@@ -1,10 +1,15 @@
 body {
-    background-color: darkgrey;
+    background-color: black;
 }
 
-h1, h4 {
+
+header {
     text-align: center;
     margin: 0.5%;
+    color: var(--text);
+    background-color: var(--background);
+    width: 80%;
+    border-radius: 20px;
 }
 
 #seleccionar {
@@ -13,16 +18,20 @@ h1, h4 {
     justify-content: center;
     align-items: center;
     margin: 0.5%;
+    color: var(--text);
+    background-color: var(--background);
+    border-radius: 20px;
 }
 
-select{
-    background-color: darkgrey;
+select {
+    background-color: var(--primary);
     border: 1px solid black;
     display: block;
     height: 10%;
     width: 25%;
     border-radius: 20px;
     margin: 0 2%;
+    color: var(--text);
 }
 
 #caja {
@@ -31,9 +40,13 @@ select{
     justify-content: center;
     align-items: center;
     height: 100%;
+    width: 80%;
+    background-color: var(--background);
+    color: var(--text);
+    border-radius: 20px;
 }
 
-#caja > p {
+#caja>p {
     text-align: center;
     height: 100%;
     width: 100%;
@@ -43,40 +56,44 @@ select{
     width: 1.5%;
     aspect-ratio: 1 / 1;
     margin: 0.1%;
-    background-color: grey;
+    background-color: var(--primary);
     border: 1px solid black;
     border-radius: 25%;
     font-size: 0;
+    color: var(--text);
 }
 
 .visible {
     width: 1.5%;
     aspect-ratio: 1 / 1;
     margin: 0.1%;
-    background-color: lightgray;
+    background-color: var(--secondary);
     border: 1px solid black;
     border-radius: 25%;
     text-align: center;
+    color: var(--text);
 }
 
 .minada {
     width: 1.5%;
     aspect-ratio: 1 / 1;
     margin: 0.1%;
-    background-color: grey;
+    background-color: var(--primary);
     border: 1px solid black;
     border-radius: 25%;
     text-align: center;
+    color: var(--text);
 }
 
 .bandera {
     width: 1.5%;
     aspect-ratio: 1 / 1;
     margin: 0.1%;
-    background-color: grey;
+    background-color: var(--primary);
     border: 1px solid black;
     border-radius: 25%;
     text-align: center;
+    color: var(--text);
 }
 
 .fila {
@@ -87,9 +104,18 @@ select{
     justify-content: center;
 }
 
+#boton {
+    background-color: var(--primary);
+    border: 1px solid black;
+    border-radius: 20px;
+    color: var(--text);
+    margin: 0.5rem;
+}
+
 #tiempo {
-  text-align: center;
-  margin-bottom: .5rem;
+    text-align: center;
+    margin-bottom: .5rem;
+    color: var(--text);
 }
 
 #infoboton {
@@ -100,7 +126,7 @@ select{
     height: 33px;
     aspect-ratio: 1 / 1;
     border: 1px solid black;
-    background-color: grey;
+    background-color: var(--primary);
     border-radius: 50%;
 }
 
@@ -108,13 +134,28 @@ select{
     position: fixed;
     top: calc(0.5rem + 33px);
     right: 0;
-    background: lightgrey;
+    background: var(--background);
     padding: .5rem;
     border: 1px solid black;
     border-radius: 4px;
     margin: 0.5rem;
+    color: var(--text);
 }
 
 .cajaoculta {
     display: none;
+}
+
+:root {
+    --primary: #532300;
+    /* SaddleBrown - cálido y acogedor */
+    --secondary: #D2691E;
+    /* Chocolate - energía suave */
+    --accent: #F4A460;
+    /* SandyBrown - toque claro */
+    --background: #2A1F15;
+    --background-rgb: 42, 31, 21;
+    /* Fondo oscuro marrón */
+    --text: #E8D5C4;
+    /* Texto claro marrón */
 }

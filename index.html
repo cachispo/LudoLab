@@ -1,26 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameHub</title>
+    <title>LudoLab</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <h1>GameHub</h1>
+        <img src="./images/logo.png" alt="Logo" id="logo">
     </header>
-    <div class="container">
-        <div class="game">
+    <div class="contenedor">
+        <div id="buscaminas" class="juego">
             <h3>Buscaminas</h3>
-            <button id="buscaminas">Jugar</button>
+            <a href="./buscaminas/index.html">
+                <button>Jugar</button>
+            </a>
+        </div>
+        <div id="sudoku" class="juego">
+            <h3>Sudoku</h3>
+            <a href="">
+                <button>Jugar</button>
+            </a>
+        </div>
+        <div id="ajedrez" class="juego">
+            <h3>Ajedrez</h3>
+            <a href="">
+                <button>Jugar</button>
+            </a>
         </div>
     </div>
+    <button id="infoboton">ℹ️</button>
+    <div id="infocaja" class="cajaoculta">
+        <p><strong>Autor:</strong> José</p>
+        <p>📧 <a href="mailto:tu@correo.com" target="_blank">58joserc@gmail.com</a></p>
+        <p>🔗 <a href="https://github.com/cachispo" target="_blank">GitHub</a></p>
+        <p>💼 <a href="https://linkedin.com/in/cachispo" target="_blank">LinkedIn</a></p>
+    </div>
     <footer>
-        <p>GameHub &copy; 2025</p>
+        <p>LudoLab &copy; 2025</p>
     </footer>
+    <script src="script.js"></script>
 </body>
 
 </html>

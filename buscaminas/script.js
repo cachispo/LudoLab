@@ -1,4 +1,4 @@
-let select=document.getElementById("dificultad")
+let select = document.getElementById("dificultad")
 let dificultad;
 let numfilas, numcolumnas1, idcelda, numminas, sitiomina, resultado, seleccionado;
 let minasmarcadas = 0
@@ -9,21 +9,23 @@ let terminado = false;
 let cronometro;
 let segundos = 0;
 let cronometroActivo = false;
+let numbanderas = 0;
+let maxbanderas = 0;
 
-function CrearTablero () {
-    document.body.style.backgroundColor = 'darkgrey'
+function CrearTablero() {
+    document.body.style.backgroundColor = 'black'
     // Para controlar si se está jugando.
     jugando = false
     // Se vacía la caja por si se cambia la dificultad durante una partida.
     caja.innerHTML = "";
     idcelda = 1;
 
-    for (f=numfilas;f>=1;f--) {
+    for (f = numfilas; f >= 1; f--) {
         let numcolumnas2 = numcolumnas1;
         let fila = document.createElement("div");
         fila.classList.add("fila");
         caja.appendChild(fila);
-        for (c=numcolumnas2;c>=1;c--) {
+        for (c = numcolumnas2; c >= 1; c--) {
             let celda = document.createElement("div");
             celda.classList.add("oculto");
             celda.setAttribute("id", idcelda);
@@ -34,8 +36,8 @@ function CrearTablero () {
     ReiniciarCronometro();
 };
 
-function AñadirMinas () {
-    let maxtablero = (numfilas*numcolumnas1);
+function AñadirMinas() {
+    let maxtablero = (numfilas * numcolumnas1);
     let usados = new Set();
 
     while (usados.size < numminas) {
@@ -47,9 +49,9 @@ function AñadirMinas () {
     }
 }
 
-function CalcularVecinos () {
+function CalcularVecinos() {
     let celdas = document.getElementsByClassName('oculto')
-    
+
     let PrimerasCeldas = new Set();
     for (let f = 0; f < numfilas; f++) {
         PrimerasCeldas.add((f * numcolumnas1) + 1);
@@ -63,33 +65,33 @@ function CalcularVecinos () {
         let minacerca = 0;
         let vecinos;
         // Se cambia el array de vecinos según estén al principio o final de la fila.
-        if (PrimerasCeldas.has(Number(celda.id))){
-            vecinos = [(Number(celda.id)-numcolumnas1),
-                (Number(celda.id)-numcolumnas1+1),
-                (Number(celda.id) + 1),
-                (Number(celda.id)+numcolumnas1),
-                (Number(celda.id)+numcolumnas1+1)]
+        if (PrimerasCeldas.has(Number(celda.id))) {
+            vecinos = [(Number(celda.id) - numcolumnas1),
+            (Number(celda.id) - numcolumnas1 + 1),
+            (Number(celda.id) + 1),
+            (Number(celda.id) + numcolumnas1),
+            (Number(celda.id) + numcolumnas1 + 1)]
         } else if (UltimasCeldas.has(Number(celda.id))) {
-            vecinos = [(Number(celda.id)-numcolumnas1-1),
-                (Number(celda.id)-numcolumnas1),
-                (Number(celda.id) - 1),
-                (Number(celda.id)+numcolumnas1-1),
-                (Number(celda.id)+numcolumnas1)]
+            vecinos = [(Number(celda.id) - numcolumnas1 - 1),
+            (Number(celda.id) - numcolumnas1),
+            (Number(celda.id) - 1),
+            (Number(celda.id) + numcolumnas1 - 1),
+            (Number(celda.id) + numcolumnas1)]
         } else {
-            vecinos = [(Number(celda.id)-numcolumnas1-1),
-                (Number(celda.id)-numcolumnas1),
-                (Number(celda.id)-numcolumnas1+1),
-                (Number(celda.id) - 1),
-                (Number(celda.id) + 1),
-                (Number(celda.id)+numcolumnas1-1),
-                (Number(celda.id)+numcolumnas1),
-                (Number(celda.id)+numcolumnas1+1)]
+            vecinos = [(Number(celda.id) - numcolumnas1 - 1),
+            (Number(celda.id) - numcolumnas1),
+            (Number(celda.id) - numcolumnas1 + 1),
+            (Number(celda.id) - 1),
+            (Number(celda.id) + 1),
+            (Number(celda.id) + numcolumnas1 - 1),
+            (Number(celda.id) + numcolumnas1),
+            (Number(celda.id) + numcolumnas1 + 1)]
         }
         // Por cada vecino se añade 1 a minacerca para mostrar las minas cercanas
         for (let vecino of vecinos) {
             vecino = document.getElementById(vecino);
             if (vecino && vecino.classList.contains('minada')) {
-                minacerca ++
+                minacerca++
             }
         }
         // Si hay más de 0 vecinos minados se añade la cantidad
@@ -99,14 +101,14 @@ function CalcularVecinos () {
     }
 }
 
-function TerminarJuego (resultado) {
+function TerminarJuego(resultado) {
     // Para que no se repita el mensaje de victoria
     if (terminado) return;
     terminado = true;
     jugando = false;
 
     if (resultado == 'v') {
-        for (let i=1; i<=(numfilas*numcolumnas1); i++) {
+        for (let i = 1; i <= (numfilas * numcolumnas1); i++) {
             let celda = document.getElementById(i);
             if (!celda.classList.contains('minada')) {
                 celda.classList.replace('oculto', 'visible');
@@ -119,7 +121,7 @@ function TerminarJuego (resultado) {
         let caja = document.getElementById('caja')
         caja.appendChild(p)
     } else if (resultado == 'd') {
-        for (let i=1; i<=(numfilas*numcolumnas1); i++) {
+        for (let i = 1; i <= (numfilas * numcolumnas1); i++) {
             let celda = document.getElementById(i);
             if (!celda.classList.contains('minada')) {
                 celda.classList.replace('oculto', 'visible');
@@ -158,7 +160,7 @@ function TerminarJuego (resultado) {
     });
 }
 
-function LiberarVecinos (celda) {
+function LiberarVecinos(celda) {
     // Para evitar la recursión infinita
     if (!celda || liberadas.has(celda)) return;
     liberadas.add(celda);
@@ -171,30 +173,30 @@ function LiberarVecinos (celda) {
     for (let f = 0; f < numfilas; f++) {
         UltimasCeldas.add((f + 1) * numcolumnas1);
     };
-        
+
     let vecinos;
     // Se cambia el array de vecinos según estén al principio o final de la fila.
-    if (PrimerasCeldas.has(Number(celda.id))){
-        vecinos = [(Number(celda.id)-numcolumnas1),
-            (Number(celda.id)-numcolumnas1+1),
-            (Number(celda.id) + 1),
-            (Number(celda.id)+numcolumnas1),
-            (Number(celda.id)+numcolumnas1+1)]
+    if (PrimerasCeldas.has(Number(celda.id))) {
+        vecinos = [(Number(celda.id) - numcolumnas1),
+        (Number(celda.id) - numcolumnas1 + 1),
+        (Number(celda.id) + 1),
+        (Number(celda.id) + numcolumnas1),
+        (Number(celda.id) + numcolumnas1 + 1)]
     } else if (UltimasCeldas.has(Number(celda.id))) {
-        vecinos = [(Number(celda.id)-numcolumnas1-1),
-            (Number(celda.id)-numcolumnas1),
-            (Number(celda.id) - 1),
-            (Number(celda.id)+numcolumnas1-1),
-            (Number(celda.id)+numcolumnas1)]
+        vecinos = [(Number(celda.id) - numcolumnas1 - 1),
+        (Number(celda.id) - numcolumnas1),
+        (Number(celda.id) - 1),
+        (Number(celda.id) + numcolumnas1 - 1),
+        (Number(celda.id) + numcolumnas1)]
     } else {
-        vecinos = [(Number(celda.id)-numcolumnas1-1),
-            (Number(celda.id)-numcolumnas1),
-            (Number(celda.id)-numcolumnas1+1),
-            (Number(celda.id) - 1),
-            (Number(celda.id) + 1),
-            (Number(celda.id)+numcolumnas1-1),
-            (Number(celda.id)+numcolumnas1),
-            (Number(celda.id)+numcolumnas1+1)]
+        vecinos = [(Number(celda.id) - numcolumnas1 - 1),
+        (Number(celda.id) - numcolumnas1),
+        (Number(celda.id) - numcolumnas1 + 1),
+        (Number(celda.id) - 1),
+        (Number(celda.id) + 1),
+        (Number(celda.id) + numcolumnas1 - 1),
+        (Number(celda.id) + numcolumnas1),
+        (Number(celda.id) + numcolumnas1 + 1)]
     }
     for (let vecino of vecinos) {
         vecino = document.getElementById(vecino);
@@ -205,13 +207,13 @@ function LiberarVecinos (celda) {
         if (vecino.classList.contains('oculto') && vecino.textContent === '') {
             vecino.classList.replace('oculto', 'visible')
             LiberarVecinos(vecino);
-        // En caso de que el contenido del vecino sea mayor que 0 (lo cual indica que
-        // tiene minas cerca), se libera este vecino pero no se llama a la función
+            // En caso de que el contenido del vecino sea mayor que 0 (lo cual indica que
+            // tiene minas cerca), se libera este vecino pero no se llama a la función
         } else if (vecino.textContent > 0) {
             vecino.classList.replace('oculto', 'visible')
         }
     }
-    
+
     // Por si al clicar se gana la partida.
     // Se comprueba que todas las celdas que no son minadas
     // estén visibles.
@@ -244,7 +246,7 @@ function IniciarCronometro() {
     let divTiempo = document.createElement('div');
     divTiempo.id = 'tiempo';
     divTiempo.innerHTML = 'Tiempo: <span id="tiempoSpan">00:00</span>';
-    let caja = document.getElementById('caja') 
+    let caja = document.getElementById('caja')
     caja.appendChild(divTiempo);
 
     if (cronometro) return;
@@ -268,8 +270,8 @@ function ReiniciarCronometro() {
     cronometroActivo = false;
     clearInterval(cronometro);
     cronometro = null;
-    segundos   = 0;
-    if (document.getElementById('tiempo')){
+    segundos = 0;
+    if (document.getElementById('tiempo')) {
         document.getElementById('tiempo').remove();
     }
 }
@@ -279,10 +281,10 @@ function ReiniciarCronometro() {
 select.addEventListener('change', () => {
     // Para controlar si está jugando
     let continuar;
-    if (jugando==true) {
+    if (jugando == true) {
         continuar = confirm('¿Seguro que deseas abandonar la partida? Perderás el progreso.')
     }
-    if (continuar==null || continuar==true) {
+    if (continuar == null || continuar == true) {
         // Para poder liberar vecinos sin problema
         liberadas.clear();
 
@@ -293,23 +295,26 @@ select.addEventListener('change', () => {
         minasmarcadas = 0
 
         dificultad = select.value;
-        if (dificultad == "facil"){
+        if (dificultad == "facil") {
             numfilas = 9
             numcolumnas1 = 9
             numminas = 10
+            maxbanderas = 10
         } else if (dificultad == "medio") {
             numfilas = 16
             numcolumnas1 = 16
             numminas = 40
+            maxbanderas = 40
         } else if (dificultad == "dificil") {
             numfilas = 16
             numcolumnas1 = 30
             numminas = 99
+            maxbanderas = 99
         };
         CrearTablero();
         AñadirMinas();
         CalcularVecinos();
-        if (document.getElementById('tiempo')){
+        if (document.getElementById('tiempo')) {
             ReiniciarCronometro();
         }
     }
@@ -323,7 +328,9 @@ document.getElementById('caja').addEventListener('click', e => {
     let celda = e.target.closest('[id]');
     // Para que no cuente el botón de nueva partida como celda y se inicia el cronómetro
     if (!celda || celda.id == 'boton' || celda.id == 'tiempo' || celda.id == 'caja') return;
-    
+    // Para que no se inicie el cronometro si se ha terminado el juego
+    if (terminado) return;
+
     // Para controlar si está jugando
     if (jugando == false) {
         jugando = true
@@ -341,7 +348,7 @@ document.getElementById('caja').addEventListener('click', e => {
             LiberarVecinos(celda);
         }
     }
-    
+
     // Por si al clicar se gana la partida.
     // Se comprueba que todas las celdas que no son minadas
     // estén visibles.
@@ -372,6 +379,15 @@ document.getElementById('caja').addEventListener('contextmenu', b => {
 
     b.preventDefault();
     let celda = b.target.closest('[id]');
+    // Para controlar si se han colocado el máximo de banderas
+    if (celda.classList.contains('oculto') && numbanderas >= maxbanderas) {
+        // Efecto visual de error
+        celda.style.backgroundColor = 'red';
+        setTimeout(() => {
+            celda.style.backgroundColor = 'var(--primary)';
+        }, 300);
+        return;
+    }
     if (!celda) return;
     if (celda.classList.contains('bandera')) {
         if (celda.classList.contains('minada')) {
@@ -379,12 +395,14 @@ document.getElementById('caja').addEventListener('contextmenu', b => {
         }
         celda.classList.replace('bandera', 'oculto');
         celda.textContent = '';
+        numbanderas--
     } else if (celda.classList.contains('oculto')) {
         if (celda.classList.contains('minada')) {
             minasmarcadas++
         }
         celda.classList.replace('oculto', 'bandera');
         celda.textContent = '🚩';
+        numbanderas++
     }
     if (minasmarcadas == numminas) {
         resultado = 'v'
@@ -398,15 +416,15 @@ window.addEventListener('load', () => {
 });
 
 // Caja con información
-let infoboton  = document.getElementById('infoboton');
+let infoboton = document.getElementById('infoboton');
 let infocaja = document.getElementById('infocaja');
 
 infoboton.addEventListener('click', () => {
-  if (infocaja.classList.contains('cajaoculta')){
-    infocaja.classList.replace('cajaoculta', 'cajavisible')
-  } else if (infocaja.classList.contains('cajavisible')) {
-    infocaja.classList.replace('cajavisible', 'cajaoculta')
-  }
+    if (infocaja.classList.contains('cajaoculta')) {
+        infocaja.classList.replace('cajaoculta', 'cajavisible')
+    } else if (infocaja.classList.contains('cajavisible')) {
+        infocaja.classList.replace('cajavisible', 'cajaoculta')
+    }
 });
 
 // Por si se clica cualquier cosa fuera de la caja
