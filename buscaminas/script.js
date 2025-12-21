@@ -149,6 +149,7 @@ function TerminarJuego(resultado) {
         terminado = false;
         minasmarcadas = 0;
         jugando = false;
+        numbanderas = 0;
 
         // Vuelve al estado inicial
         caja.innerHTML = '';
@@ -276,6 +277,26 @@ function ReiniciarCronometro() {
     }
 }
 
+function SetDificultad() {
+    dificultad = select.value;
+    if (dificultad == "facil") {
+        numfilas = 9
+        numcolumnas1 = 9
+        numminas = 10
+        maxbanderas = 10
+    } else if (dificultad == "medio") {
+        numfilas = 16
+        numcolumnas1 = 16
+        numminas = 40
+        maxbanderas = 40
+    } else if (dificultad == "dificil") {
+        numfilas = 16
+        numcolumnas1 = 30
+        numminas = 99
+        maxbanderas = 99
+    };
+}
+
 // La dificultad se puede cambiar en cualquier momento.
 // En consecuencia se crea el nuevo tablero y se añaden las minas.
 select.addEventListener('change', () => {
@@ -294,23 +315,7 @@ select.addEventListener('change', () => {
         // Para saber si el jugador ha ganado
         minasmarcadas = 0
 
-        dificultad = select.value;
-        if (dificultad == "facil") {
-            numfilas = 9
-            numcolumnas1 = 9
-            numminas = 10
-            maxbanderas = 10
-        } else if (dificultad == "medio") {
-            numfilas = 16
-            numcolumnas1 = 16
-            numminas = 40
-            maxbanderas = 40
-        } else if (dificultad == "dificil") {
-            numfilas = 16
-            numcolumnas1 = 30
-            numminas = 99
-            maxbanderas = 99
-        };
+        SetDificultad();
         CrearTablero();
         AñadirMinas();
         CalcularVecinos();
