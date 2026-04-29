@@ -1,0 +1,15 @@
+{
+    "name": "Sudoku",
+    "description": "Tablero de sudoku generado con PyScript",
+    "version": "0.0.1",
+    "author": "José Rodríguez",
+    "css": [
+        "./style.css"
+    ],
+    "js": [
+        "./main.py"
+    ],
+    "paths": [
+        "./"
+    ]
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudoku</title>
+
+    <link rel="stylesheet" href="https://pyscript.net/releases/2024.1.1/core.css" />
+    <script type="module" src="https://pyscript.net/releases/2024.1.1/core.js"></script>
+
+    <style>
+        #sudoku-board {
+            display: grid;
+            grid-template-columns: repeat(9, 45px);
+            gap: 5px;
+            margin: 20px;
+        }
+
+        .cell {
+            width: 45px;
+            height: 45px;
+            border: 2px solid #444;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="sudoku-board"></div>
+
+    <script type="py" src="./main.py" config="./pyscript.json"></script>
+
+</body>
+
+</html>
