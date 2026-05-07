@@ -1,0 +1,26 @@
+services:
+  menu:
+    build: ./menu
+    container_name: ludolab-menu
+    ports:
+      - "80:3000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
+
+  buscaminas:
+    build: ./buscaminas
+    container_name: ludolab-buscaminas
+    ports:
+      - "8001:80"
+    restart: unless-stopped
+    # Arranca detenido; el menú lo levanta cuando el usuario lo elige
+    profiles: ["games"]
+
+  sudoku:
+    build: ./sudoku
+    container_name: ludolab-sudoku
+    ports:
+      - "8002:80"
+    restart: unless-stopped
+    profiles: ["games"]

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LudoLab</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <img src="images/logo.png" alt="LudoLab" id="logo">
+  </header>
+
+  <div class="juegos" id="juegos">
+    <div class="juego" data-juego="buscaminas">
+      <img src="images/buscaminas.png" alt="Buscaminas" class="juego-img">
+      <h2>💣 Buscaminas</h2>
+      <span class="estado" id="estado-buscaminas">cargando…</span>
+      <div class="spinner" id="spinner-buscaminas"></div>
+      <button onclick="jugar('buscaminas')">Jugar</button>
+    </div>
+    <div class="juego" data-juego="sudoku">
+      <img src="images/sudoku.png" alt="Sudoku" class="juego-img">
+      <h2>🔢 Sudoku</h2>
+      <span class="estado" id="estado-sudoku">cargando…</span>
+      <div class="spinner" id="spinner-sudoku"></div>
+      <button onclick="jugar('sudoku')">Jugar</button>
+    </div>
+    <div class="juego" data-juego="ajedrez">
+      <img src="images/ajedrez.png" alt="Ajedrez" class="juego-img">
+      <h2>♟️ Ajedrez</h2>
+      <span class="estado proximamente">próximamente</span>
+      <button disabled>Jugar</button>
+    </div>
+  </div>
+
+  <footer>LudoLab &copy; 2025 · Sin anuncios, sin rastreo, todo local</footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
