@@ -37,11 +37,9 @@ def generar_cuadricula(tablero):
             celdaPadre = document.createElement("div")
             celda = document.createElement("div")
 
-            bloque = (i // 3) * 3 + (j // 3)
-            posicion = (i % 3) * 3 + (j % 3)
-            id_celda = f"{bloque}{posicion}"
+            id_celda = i * 9 + j
 
-            celda.id = id_celda
+            celda.id = str(id_celda)
             celda.innerText = str(tablero[i][j])
 
             container.appendChild(celdaPadre)
@@ -49,4 +47,5 @@ def generar_cuadricula(tablero):
 
 tablero = [[0] * 9 for _ in range(9)]
 rellenar(tablero)
+
 generar_cuadricula(tablero)
