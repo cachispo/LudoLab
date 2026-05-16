@@ -1,0 +1,96 @@
+body {
+    background-color: black;
+}
+
+
+header {
+    text-align: center;
+    margin: 0.5%;
+    color: var(--text);
+    background-color: var(--background);
+    width: 80%;
+    border-radius: 20px;
+}
+
+#seleccionar {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin: 0.5%;
+    color: var(--text);
+    background-color: var(--background);
+    border-radius: 20px;
+}
+
+select {
+    background-color: var(--primary);
+    border: 1px solid black;
+    display: block;
+    height: 10%;
+    width: 25%;
+    border-radius: 20px;
+    margin: 0 2%;
+    color: var(--text);
+}
+
+#sudoku-board {
+    display: grid;
+    grid-template-columns: repeat(9, 45px);
+    gap: 4px;
+    margin: 19px;
+    justify-content: center;
+    background-color: var(--background);
+    padding: 10px;
+    border-radius: 20px;
+}
+
+.celda {
+    width: 45px;
+    height: 45px;
+    border: 2px solid #444;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--primary);
+    font-weight: bold;
+    color: var(--text);
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    position: fixed;
+    width: 100%;
+    height: 5%;
+    bottom: 0;
+    background-color: var(--background);
+}
+
+footer a {
+    color: var(--text);
+}
+
+#banner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text);
+    background-color: var(--background);
+    width: 80%;
+    margin: 0.5% auto;
+    padding: 10px;
+    border-radius: 20px;
+    color: var(--text);
+}
+
+:root {
+    --primary: #532300;
+    --secondary: #D2691E;
+    --accent: #F4A460;
+    --background: #2A1F15;
+    --background-rgb: 42, 31, 21;
+    --text: #E8D5C4;
+}
