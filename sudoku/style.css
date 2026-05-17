@@ -45,6 +45,10 @@ select {
     border-radius: 20px;
 }
 
+#sudoku-board.oculto {
+    display: none;
+}
+
 .celda {
     width: 45px;
     height: 45px;
@@ -55,6 +59,18 @@ select {
     background-color: var(--primary);
     font-weight: bold;
     color: var(--text);
+    box-sizing: border-box;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Quita las flechas en Firefox */
+input[type=number] {
+    appearance: textfield;
 }
 
 footer {
@@ -70,19 +86,6 @@ footer {
 }
 
 footer a {
-    color: var(--text);
-}
-
-#banner {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: var(--text);
-    background-color: var(--background);
-    width: 80%;
-    margin: 0.5% auto;
-    padding: 10px;
-    border-radius: 20px;
     color: var(--text);
 }
 
