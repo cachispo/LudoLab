@@ -80,8 +80,8 @@ Descarga e instala [Docker Desktop](https://www.docker.com/products/docker-deskt
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/cachispo/ludolab.git
-cd ludolab
+git clone https://github.com/cachispo/LudoLab.git
+cd LudoLab
 ```
 
 ### 2. Construir las imágenes
