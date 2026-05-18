@@ -41,7 +41,7 @@ Navegador
 │  ┌──────────────────┐                       │
 │  │  Menú (Node.js)  │ :80  ← siempre activo │
 │  └────────┬─────────┘                       │
-│           │ docker start (bajo demanda)      │
+│           │ docker start (bajo demanda)     │
 │           ▼                                 │
 │  ┌──────────────────┐  ┌─────────────────┐  │
 │  │   Buscaminas     │  │     Sudoku      │  │
