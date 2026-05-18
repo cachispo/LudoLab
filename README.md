@@ -1,4 +1,4 @@
-# 🎮 LudoLab
+# LudoLab
 
 **Plataforma de juegos clásicos offline, sin anuncios, sin rastreo, lista para desplegar en tu red local con Docker.**
 
@@ -6,17 +6,17 @@ LudoLab nació como Proyecto de Fin de Grado del ciclo **ASIR** (Administración
 
 ---
 
-## 🕹️ Juegos disponibles
+## Juegos disponibles
 
 | Juego | Tecnología | Estado |
 |---|---|---|
-| 💣 Buscaminas | HTML · CSS · JavaScript | ✅ Completo |
-| 🔢 Sudoku | HTML · CSS · PyScript | 🚧 En desarrollo |
-| ♟️ Ajedrez | — | 📋 Planificado |
+| Buscaminas | HTML · CSS · JavaScript | Completo |
+| Sudoku | HTML · CSS · PyScript | En desarrollo |
+| Ajedrez | — | Planificado |
 
 ---
 
-## ✨ ¿Por qué LudoLab?
+## ¿Por qué LudoLab?
 
 - **Sin anuncios.** Ninguno. Jamás.
 - **Sin internet.** Una vez instalado, funciona completamente offline.
@@ -27,7 +27,7 @@ LudoLab nació como Proyecto de Fin de Grado del ciclo **ASIR** (Administración
 
 ---
 
-## 🏗️ Arquitectura
+## Arquitectura
 
 LudoLab usa **Docker** para aislar cada juego en su propio contenedor. Un servidor central (el menú) es el único que está siempre encendido. Cuando el usuario elige un juego, el menú arranca ese contenedor y redirige el navegador directamente a él.
 
@@ -52,7 +52,7 @@ Navegador
 
 ---
 
-## 📋 Requisitos
+## Requisitos
 
 ### Docker y Docker Compose
 
@@ -75,7 +75,7 @@ Descarga e instala [Docker Desktop](https://www.docker.com/products/docker-deskt
 
 ---
 
-## 🚀 Instalación
+## Instalación
 
 ### 1. Clonar el repositorio
 
@@ -108,7 +108,7 @@ docker compose up -d menu
 
 ---
 
-## 🎮 Uso
+## Uso
 
 1. Abre **http://localhost** en el navegador.
 2. El menú muestra los juegos disponibles y si su contenedor está activo o no.
@@ -138,7 +138,7 @@ Los contenedores de juegos se arrancan solos cuando alguien los pide desde el me
 
 ---
 
-## 🔌 Puertos utilizados
+## Puertos utilizados
 
 | Servicio | Puerto |
 |---|---|
@@ -150,7 +150,7 @@ Si algún puerto está ocupado en tu máquina, cámbialo en `docker-compose.yml`
 
 ---
 
-## ➕ Añadir un juego nuevo
+## Añadir un juego nuevo
 
 1. Crea una carpeta con los archivos del juego y copia el `Dockerfile` del buscaminas dentro.
 2. Añade el servicio en `docker-compose.yml` con un puerto libre y el perfil `games`.
@@ -167,7 +167,7 @@ El menú lo detecta automáticamente en el siguiente refresco.
 
 ---
 
-## 👤 Autor
+## Autor
 
 **José Rodríguez**
 📧 [58joserc@gmail.com](mailto:58joserc@gmail.com)
@@ -175,6 +175,6 @@ El menú lo detecta automáticamente en el siguiente refresco.
 
 ---
 
-## 📄 Licencia
+## Licencia
 
-Proyecto educativo — Proyecto de Fin de Grado ASIR 2025.
+Proyecto educativo — Proyecto de Fin de Grado ASIR 2025/26.
