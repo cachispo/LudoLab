@@ -1,5 +1,5 @@
 from pyscript import web, when, document
-import random
+import random, asyncio
 
 # El número de celdas visibles se ajustará según la dificultad elegida por el usuario
 visibles = 0
@@ -35,7 +35,6 @@ def rellenar(tablero):
 
 def generar_cuadricula(tablero, visibles):
     container = web.page["sudoku-board"]
-    # Limpiamos el tablero por si cambian de dificultad a mitad de partida
     container._dom_element.innerHTML = ""
 
     escaques = list(range(81))
@@ -47,22 +46,45 @@ def generar_cuadricula(tablero, visibles):
             id_celda = i * 9 + j
             valor = tablero[i][j]
 
+            # Determina el deslinde de los bloques de tres
+            clases_bloque = ""
+            if i in [2, 5]: clases_bloque += " borde-bajo"
+            if j in [2, 5]: clases_bloque += " borde-derecho"
+
             if id_celda in ocultos:
                 dom_input = document.createElement("input")
                 dom_input.type = "number"
                 dom_input.id = str(id_celda)
-                dom_input.className = "celda vacia"
+                dom_input.className = "celda vacia" + clases_bloque
                 dom_input.min = "1"
                 dom_input.max = "9"
                 dom_input.setAttribute("data-solucion", str(valor))
+                dom_input.oninput = al_escribir
+                dom_input.onkeypress = lambda e: e.preventDefault() if e.key not in "123456789" else None
                 container._dom_element.appendChild(dom_input)
             else:
+                clases_totales = ["celda", "fija"]
+                if i in [2, 5]: clases_totales.append("borde-bajo")
+                if j in [2, 5]: clases_totales.append("borde-derecho")
+                
                 celda = web.div(
                     str(valor),
                     id=str(id_celda),
-                    classes=["celda", "fija"]
+                    classes=clases_totales
                 )
                 container.append(celda)
+        
+        document.getElementById("selector-numeros").classList.remove("oculto")
+        document.getElementById("contador-restantes").classList.remove("oculto")
+        document.getElementById("contador-restantes").innerText = "Seleccione una cifra para escrutar"
+        
+        for b in document.querySelectorAll(".num-btn"):
+            b.classList.remove("activo")
+
+        boton = document.getElementById("btn-comprobar")
+        boton.classList.remove("oculto")
+        boton.innerText = "Comprobar"
+        document.getElementById("btn-pista").classList.remove("oculto")
 
 
 # 2. EL EVENTO QUE SE DISPARA AL CAMBIAR LA DIFICULTAD
@@ -90,3 +112,223 @@ def set_dificultad(event):
     
     # Llamamos a la función global para pintar las celdas
     generar_cuadricula(tablero, visibles)
+
+# Cosas que ocurren al escribir en una celda vacía
+def al_escribir(e):
+    celda = e.target
+    val = str(celda.value)
+    
+    # Solo se permite un dígito, así que si el usuario escribe más de uno, se queda con el primero
+    if len(val) > 1:
+        celda.value = val[:1]
+    
+    # Si la celda estaba corregida y errónea, se devuelve a su estado normal al escribir en ella
+    celda.classList.remove("erronea")
+    
+    # Escudriña si restan casillas vacías por rellenar
+    inputs = document.querySelectorAll("input.vacia")
+    todo_lleno = True
+    for inp in inputs:
+        if not inp.value:
+            todo_lleno = False
+            break
+            
+    boton = document.getElementById("btn-comprobar")
+    if todo_lleno:
+        boton.innerText = "Verificar"
+    else:
+        boton.innerText = "Comprobar"
+    
+    btn_activo = document.querySelector(".num-btn.activo")
+    if btn_activo:
+        num_elegido = btn_activo.getAttribute("data-num")
+        actualizar_resaltado_y_conteo(num_elegido)
+
+
+@when("click", "#btn-comprobar")
+def comprobar_tablero(event):
+    inputs = document.querySelectorAll("input.vacia")
+    for inp in inputs:
+        valor_usuario = inp.value
+        if valor_usuario:  # Si no estuviere vacía, se juzga su verdad
+            solucion = inp.getAttribute("data-solucion")
+            if str(valor_usuario) != str(solucion):
+                inp.classList.add("erronea")
+            else:
+                inp.classList.remove("erronea")
+
+# Lógica de resaltado de celdas al hacer click en ellas, para facilitar la visualización de números iguales.
+# Se resaltan las demás celdas con el mismo número.
+@when("click", "#sudoku-board")
+def resaltar_camino(event):
+    celda_activa = event.target
+    
+    # Si la pieza no es celda, no se hace nada.
+    if "celda" not in celda_activa.className:
+        return
+
+    celdas = document.querySelectorAll(".celda")
+    for c in celdas:
+        c.classList.remove("resaltada")
+        
+    id_activa = int(celda_activa.id)
+    fila_activa = id_activa // 9
+    col_activa = id_activa % 9
+    
+    es_fija = "fija" in celda_activa.className
+    valor_activo = celda_activa.innerText.strip() if es_fija else None
+    
+    for c in celdas:
+        # Si la celda pulsada es fija, resalta los números iguales del tablero
+        if es_fija and valor_activo and valor_activo != "":
+            val_c = c.value if "vacia" in c.className else c.innerText
+            if val_c and val_c.strip() == valor_activo:
+                c.classList.add("resaltada")
+
+def actualizar_resaltado_y_conteo(num_elegido):
+    celdas = document.querySelectorAll(".celda")
+    contador_div = document.getElementById("contador-restantes")
+    
+    # Limpia los resaltes anteriores
+    for c in celdas:
+        c.classList.remove("resaltada")
+        
+    if num_elegido == "X" or not num_elegido:
+        contador_div.innerText = "Seleccione una cifra para escrutar"
+        return
+        
+    puestos = 0
+    for c in celdas:
+        val_c = c.value if "vacia" in c.className else c.innerText
+        if val_c and val_c.strip() == num_elegido:
+            c.classList.add("resaltada")
+            puestos += 1
+            
+    restantes = 9 - puestos
+    if restantes > 0:
+        contador_div.innerText = f"Restan {restantes} piezas del número {num_elegido}"
+    elif restantes == 0:
+        contador_div.innerText = f"El número {num_elegido} está completo"
+    else:
+        contador_div.innerText = f"Demasía del número {num_elegido}: {abs(restantes)}"
+
+
+@when("click", "#selector-numeros")
+def seleccionar_numero(event):
+    btn = event.target
+    if "num-btn" not in btn.className:
+        return
+        
+    botones = document.querySelectorAll(".num-btn")
+    for b in botones:
+        b.classList.remove("activo")
+        
+    num_elegido = btn.getAttribute("data-num")
+    if num_elegido != "X":
+        btn.classList.add("activo")
+        
+    actualizar_resaltado_y_conteo(num_elegido)
+
+
+@when("click", "#sudoku-board")
+def click_tablero(event):
+    celda = event.target
+    if "celda" not in celda.className:
+        return
+        
+    # Si el jugador clica una casilla vacía y hay número activo abajo, se escribe.
+    if "vacia" in celda.className:
+        btn_activo = document.querySelector(".num-btn.activo")
+        if btn_activo:
+            num_elegido = btn_activo.getAttribute("data-num")
+            celda.value = num_elegido
+            celda.classList.remove("erronea")
+            actualizar_resaltado_y_conteo(num_elegido)
+            
+            # Escudriña si todo el tablero quedó cubierto
+            inputs = document.querySelectorAll("input.vacia")
+            todo_lleno = True
+            for inp in inputs:
+                if not inp.value:
+                    todo_lleno = False
+                    break
+            boton = document.getElementById("btn-comprobar")
+            boton.innerText = "Verificar" if todo_lleno else "Comprobar"
+        return
+        
+    # Si se pincha una celda fija, enciende su correspondiente botón abajo
+    if "fija" in celda.className:
+        num = celda.innerText.strip()
+        if num:
+            botones = document.querySelectorAll(".num-btn")
+            for b in botones:
+                b.classList.remove("activo")
+                if b.getAttribute("data-num") == num:
+                    b.classList.add("activo")
+            actualizar_resaltado_y_conteo(num)
+
+
+@when("click", "#btn-pista")
+def dar_pista(event):
+    inputs = document.querySelectorAll("input.vacia")
+    vacios = [inp for inp in inputs if not inp.value]
+    
+    if not vacios:
+        return  # No resta hueco alguno por rellenar
+        
+    celda_azar = random.choice(vacios)
+    solucion = celda_azar.getAttribute("data-solucion")
+    celda_azar.value = solucion
+    celda_azar.classList.remove("erronea")
+    
+    # Si hubiere botón encendido, se renueva el conteo
+    btn_activo = document.querySelector(".num-btn.activo")
+    if btn_activo:
+        num_elegido = btn_activo.getAttribute("data-num")
+        actualizar_resaltado_y_conteo(num_elegido)
+        
+    # Si tras la pista se completó el lienzo, múdese el rótulo
+    vacios_despues = [inp for inp in inputs if not inp.value]
+    if not vacios_despues:
+        document.getElementById("btn-comprobar").innerText = "Verificar"
+
+@when("click", "#btn-comprobar")
+async def comprobar_tablero(event):
+    tablero = document.getElementById("sudoku-board")
+    banner = document.getElementById("banner")
+    
+    # Enciende el pulso en el tablero
+    tablero.classList.add("anim-verificar")
+    
+    inputs = document.querySelectorAll("input.vacia")
+    errores = 0
+    vacios = 0
+    
+    # Escrutinio de las casillas
+    for inp in inputs:
+        val = inp.value.strip()
+        sol = inp.getAttribute("data-solucion")
+        
+        if not val:
+            vacios += 1
+            inp.classList.remove("erronea")
+        elif val != sol:
+            errores += 1
+            inp.classList.add("erronea")
+        else:
+            inp.classList.remove("erronea")
+            
+    # Espera que el pulso acabe su danza
+    await asyncio.sleep(0.4)
+    tablero.classList.remove("anim-verificar")
+    
+    # Sentencia del banner
+    if errores == 0 and vacios == 0:
+        banner.className = "victoria"
+        banner.innerText = "¡Victoria! El armazón es perfecto y cabal."
+    elif errores > 0:
+        banner.className = "error"
+        banner.innerText = f"Mal bajío: restan {errores} piezas erradas."
+    else:
+        banner.className = "incompleto"
+        banner.innerText = "El juicio va bien, empero quedan huecos."

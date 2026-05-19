@@ -49,6 +49,35 @@ select {
     display: none;
 }
 
+.borde-bajo {
+    border-bottom: 3px solid var(--background) !important;
+}
+
+.borde-derecho {
+    border-right: 3px solid var(--background) !important;
+}
+
+#btn-comprobar {
+    background-color: var(--primary);
+    color: var(--text);
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    margin: 10px auto;
+}
+
+#btn-comprobar:hover {
+    background-color: var(--accent);
+    color: black;
+}
+
+#btn-comprobar.oculto {
+    display: none;
+}
+
 .celda {
     width: 45px;
     height: 45px;
@@ -62,6 +91,15 @@ select {
     box-sizing: border-box;
 }
 
+.celda.resaltada {
+    background-color: #6b3004 !important;
+}
+
+.celda.erronea {
+    background-color: #8B2500 !important;
+    color: #FFF;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
     -webkit-appearance: none;
@@ -71,6 +109,106 @@ input::-webkit-inner-spin-button {
 /* Quita las flechas en Firefox */
 input[type=number] {
     appearance: textfield;
+}
+
+input.celda {
+    text-align: center;
+    padding: 0;
+    font: inherit;
+    outline: none;
+}
+
+#selector-numeros {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin: 15px auto 5px auto;
+}
+
+#selector-numeros.oculto, #contador-restantes.oculto {
+    display: none;
+}
+
+.num-btn {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary);
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    border: 2px solid #444;
+    user-select: none;
+}
+
+.num-btn.activo {
+    background-color: var(--accent);
+    color: black;
+}
+
+#btn-pista {
+    background-color: var(--primary);
+    color: var(--text);
+    border: 2px solid #444;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin: 10px 5px;
+}
+
+#btn-pista:hover {
+    background-color: #333;
+}
+
+#btn-pista.oculto {
+    display: none;
+}
+
+#contador-restantes {
+    color: var(--text);
+    font-size: 15px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Animación de verificación */
+@keyframes pulso-verificar {
+    0% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 255, 255, 0); }
+    50% { transform: scale(1.01); box-shadow: 0 0 15px var(--accent); }
+    100% { transform: scale(1); box-shadow: 0 0 0px rgba(255, 255, 255, 0); }
+}
+
+.anim-verificar {
+    animation: pulso-verificar 0.4s ease-in-out;
+}
+
+/* Voces del destino (Banner) */
+#banner {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    text-align: center;
+    min-height: 24px;
+}
+
+#banner.victoria {
+    color: #4caf50; /* Verde oliva de triunfo */
+    font-size: 20px;
+    text-shadow: 0 0 8px rgba(76, 175, 80, 0.4);
+}
+
+#banner.error {
+    color: #ff5252;
+}
+
+#banner.incompleto {
+    color: var(--text);
+    font-style: italic;
 }
 
 footer {
