@@ -443,3 +443,18 @@ document.addEventListener('click', i => {
     // En cualquier otro caso la cerramos
     infocaja.classList.replace('cajavisible', 'cajaoculta');
 });
+
+// Intercepta el viaje para apagar el contenedor al volver al menú principal
+document.getElementById('enlace-volver').addEventListener('click', async (event) => {
+    event.preventDefault(); // Detiene la huida inmediata
+    
+    try {
+        // Llama al puerto 3000 e usa la senda limpia de Dockerode
+        await fetch('http://localhost:3000/api/detener/buscaminas', { method: 'POST' });
+    } catch (error) {
+        // Si la máquina no responde, la razón no se detiene
+    }
+    
+    // Camina hacia el menú principal en su puerto cabal
+    window.location.href = 'http://localhost:3000';
+});

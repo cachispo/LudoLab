@@ -67,3 +67,21 @@ app.post("/api/detener/:juego", async (req, res) => {
 
 const PORT = 3000;
 app.listen(PORT, () => console.log(`LudoLab menú en http://localhost:${PORT}`));
+
+const { exec } = require('child_process');
+
+// Pasadizo para detener el sudoku
+app.post('/api/stop/sudoku', (req, res) => {
+    exec('docker container stop ludolab-sudoku', (err) => {
+        if (err) return res.status(500).send(err.message);
+        res.sendStatus(200);
+    });
+});
+
+// Pasadizo para detener el buscaminas
+app.post('/api/stop/buscaminas', (req, res) => {
+    exec('docker container stop ludolab-buscaminas', (err) => {
+        if (err) return res.status(500).send(err.message);
+        res.sendStatus(200);
+    });
+});

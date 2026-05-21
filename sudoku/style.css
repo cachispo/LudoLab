@@ -168,6 +168,12 @@ input.celda {
     display: none;
 }
 
+/* Destello de la pieza otorgada por la gracia */
+.celda.anim-pista {
+    background-color: var(--accent) !important;
+    color: black !important;
+}
+
 #contador-restantes {
     color: var(--text);
     font-size: 15px;
@@ -185,6 +191,15 @@ input.celda {
 
 .anim-verificar {
     animation: pulso-verificar 0.4s ease-in-out;
+}
+
+/* Botones de número sin lumbre */
+.num-btn.agotado {
+    opacity: 0.25;
+    background-color: #1a1510 !important;
+    border-color: #222 !important;
+    cursor: not-allowed;
+    filter: grayscale(100%);
 }
 
 /* Voces del destino (Banner) */
