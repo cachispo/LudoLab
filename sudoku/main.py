@@ -1,10 +1,10 @@
-from pyscript import web, when, document
+from pyscript import web, when, document, window
 import random, asyncio
 
 # El número de celdas visibles se ajustará según la dificultad elegida por el usuario
 visibles = 0
 
-# 1. FUNCIONES PARA GENERAR EL TABLERO DE SUDOKU
+# Funciones para generar el tablero de sudoku
 def es_valido(tablero, i, j, numero):
     if numero in tablero[i]:
         return False
@@ -85,9 +85,10 @@ def generar_cuadricula(tablero, visibles):
         boton.classList.remove("oculto")
         boton.innerText = "Comprobar"
         document.getElementById("btn-pista").classList.remove("oculto")
+        actualizar_conteo_botones()
 
 
-# 2. EL EVENTO QUE SE DISPARA AL CAMBIAR LA DIFICULTAD
+# El evento que se dispara al cambiar la dificultad
 @when("change", "#dificultad")
 def set_dificultad(event):
     global visibles
@@ -145,19 +146,6 @@ def al_escribir(e):
         actualizar_resaltado_y_conteo(num_elegido)
 
 
-@when("click", "#btn-comprobar")
-def comprobar_tablero(event):
-    inputs = document.querySelectorAll("input.vacia")
-    for inp in inputs:
-        valor_usuario = inp.value
-        if valor_usuario:  # Si no estuviere vacía, se juzga su verdad
-            solucion = inp.getAttribute("data-solucion")
-            if str(valor_usuario) != str(solucion):
-                inp.classList.add("erronea")
-            else:
-                inp.classList.remove("erronea")
-
-# Lógica de resaltado de celdas al hacer click en ellas, para facilitar la visualización de números iguales.
 # Se resaltan las demás celdas con el mismo número.
 @when("click", "#sudoku-board")
 def resaltar_camino(event):
@@ -211,6 +199,8 @@ def actualizar_resaltado_y_conteo(num_elegido):
         contador_div.innerText = f"El número {num_elegido} está completo"
     else:
         contador_div.innerText = f"Demasía del número {num_elegido}: {abs(restantes)}"
+    
+    actualizar_conteo_botones()
 
 
 @when("click", "#selector-numeros")
@@ -269,7 +259,7 @@ def click_tablero(event):
 
 
 @when("click", "#btn-pista")
-def dar_pista(event):
+async def dar_pista(event):
     inputs = document.querySelectorAll("input.vacia")
     vacios = [inp for inp in inputs if not inp.value]
     
@@ -281,6 +271,9 @@ def dar_pista(event):
     celda_azar.value = solucion
     celda_azar.classList.remove("erronea")
     
+    # Enciende el destello en la pieza otorgada
+    celda_azar.classList.add("anim-pista")
+    
     # Si hubiere botón encendido, se renueva el conteo
     btn_activo = document.querySelector(".num-btn.activo")
     if btn_activo:
@@ -291,6 +284,38 @@ def dar_pista(event):
     vacios_despues = [inp for inp in inputs if not inp.value]
     if not vacios_despues:
         document.getElementById("btn-comprobar").innerText = "Verificar"
+        
+    actualizar_conteo_botones()
+        
+    # Detiene la razón un segundo e apaga la lumbre
+    await asyncio.sleep(1.0)
+    celda_azar.classList.remove("anim-pista")
+
+def actualizar_conteo_botones():
+    """Apaga la lumbre de los botones desque sus nueve piezas están en su justo lugar."""
+    conteos = {str(n): 0 for n in range(1, 10)}
+    
+    # Cuenta las celdas que vinieron fijas de la matriz
+    for celda in document.querySelectorAll(".celda.fija"):
+        num = celda.innerText.strip()
+        if num in conteos:
+            conteos[num] += 1
+            
+    # Cuenta los huecos que se han rellenado correctamente
+    for inp in document.querySelectorAll("input.vacia"):
+        val = inp.value.strip()
+        sol = inp.getAttribute("data-solucion")
+        if val == sol:
+            conteos[val] += 1
+            
+    # Muda el tono de los botones si llegaron a la novena pieza
+    for n in range(1, 10):
+        btn = document.querySelector(f".num-btn[data-num='{n}']")
+        if btn:
+            if conteos[str(n)] >= 9:
+                btn.classList.add("agotado")
+            else:
+                btn.classList.remove("agotado")
 
 @when("click", "#btn-comprobar")
 async def comprobar_tablero(event):
@@ -328,7 +353,24 @@ async def comprobar_tablero(event):
         banner.innerText = "¡Victoria! El armazón es perfecto y cabal."
     elif errores > 0:
         banner.className = "error"
-        banner.innerText = f"Mal bajío: restan {errores} piezas erradas."
+        banner.innerText = f"Casi lo tienes: restan {errores} piezas erradas."
     else:
         banner.className = "incompleto"
         banner.innerText = "El juicio va bien, empero quedan huecos."
+    
+    actualizar_conteo_botones()
+
+@when("click", "#enlace-volver")
+async def detener_y_volver(event):
+    event.preventDefault() # Detiene la huida inmediata
+    
+    # Envía el aviso al servidor del menú para tumbar el contenedor
+    try:
+        opciones = window.JSON.parse('{"method": "POST"}')
+        await window.fetch("http://localhost:80/api/stop/sudoku", opciones)
+    except Exception as e:
+        # Si la máquina no responde, la razón no se detiene
+        pass
+        
+    # Muda el viaje al menú principal
+    window.location.href = "http://localhost:80"

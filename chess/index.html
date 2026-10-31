@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ajedrez Arcade · Puzles Infinitos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="cabinet">
+    <h1 class="logo">♞ AJEDREZ ARCADE ♞</h1>
+
+    <section class="hud" aria-label="Marcador">
+      <div class="stat"><span class="label">PUNTOS</span><span id="score">000000</span></div>
+      <div class="stat"><span class="label">RACHA</span><span id="streak">0</span></div>
+      <div class="stat"><span class="label">VIDAS</span><span id="lives" class="lives">♥♥♥</span></div>
+      <div class="stat"><span class="label">NIVEL</span><span id="rating">----</span></div>
+    </section>
+    <div class="record">RÉCORD <span id="record">000000</span></div>
+
+    <div id="status" class="status blink">INSERTE FICHA...</div>
+
+    <div class="board-wrap">
+      <div id="board" class="board" role="grid" aria-label="Tablero de ajedrez"></div>
+    </div>
+
+    <div id="turn" class="turn">&nbsp;</div>
+
+    <div class="buttons">
+      <button id="btn-hint" type="button">PISTA</button>
+      <button id="btn-skip" type="button">SALTAR</button>
+      <button id="btn-next" type="button" class="primary" disabled>SIGUIENTE ▶</button>
+      <button id="btn-sound" type="button">SONIDO: SÍ</button>
+    </div>
+
+    <p id="themes" class="themes"></p>
+    <footer>PUZLES: LICHESS.ORG (CC0)</footer>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
